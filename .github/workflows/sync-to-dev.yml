@@ -26,4 +26,4 @@ jobs:
           git rebase --onto $BRANCH_NAME dev
           # git config pull.rebase true
           git pull --rebase origin dev
-          git push
+          git push origin dev
