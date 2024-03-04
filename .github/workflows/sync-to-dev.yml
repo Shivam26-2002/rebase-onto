@@ -3,30 +3,27 @@ on:
   push:
     branches:
       - main
-      - release-1.3
+      - 'hotfix-*'
+      - 'release-*'
 jobs:
-  push-test:
+  sync-to-dev:
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
        - name: Checkout code
          uses: actions/checkout@v2
          with:
-            fetch-depth: 0      
-       - name: Rebase 
+            fetch-depth: 0    
+       - name: Rebase
          run: |
           git config --global user.email github-actions@github.com
           git config --global user.name github-actions
+          
           BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
-          echo "Branch name is $BRANCH_NAME!" 
-          echo "COMMIT_SHA=$(git rev-parse origin/$BRANCH_NAME)" >> $GITHUB_ENV
-          git checkout dev
+          
           git checkout $BRANCH_NAME
-          echo "0"
-          git rebase --onto dev $COMMIT_SHA
-          echo "1"
           git checkout dev
-          git status
-          git rebase $BRANCH_NAME
-          echo "2"
-          git push origin dev
-          echo "3"
+          git rebase --onto $BRANCH_NAME dev
+          # git config pull.rebase true
+          git pull --rebase origin dev
+          git push
