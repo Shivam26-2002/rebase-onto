@@ -19,6 +19,7 @@ jobs:
           BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
           # echo "Branch name is $BRANCH_NAME!" 
           echo "COMMIT_SHA=$(git rev-parse origin/$BRANCH_NAME)" >> $GITHUB_ENV
+          git checkout dev
           git checkout $BRANCH_NAME
           echo "0"
           git rebase --onto dev $COMMIT_SHA
