@@ -3,6 +3,6 @@ on: workflow_dispatch
 jobs:
   trial:
     runs-on: ubuntu-latest
-      steps:
+    steps:
         - name: Trial
           run: echo "Hello World"
