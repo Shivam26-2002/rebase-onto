@@ -1,0 +1,32 @@
+name: sync-to-dev
+on:
+  push:
+    branches:
+      - feature
+jobs:
+  push-test:
+    runs-on: ubuntu-latest
+    steps:
+       - name: Checkout code
+         uses: actions/checkout@v2
+         with:
+            fetch-depth: 0      
+       - name: Rebase 
+         run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
+          # echo "Branch name is $BRANCH_NAME!" 
+          echo "COMMIT_SHA=$(git rev-parse origin/$BRANCH_NAME)" >> $GITHUB_ENV
+          git checkout $BRANCH_NAME
+          echo "0"
+          git rebase --onto dev $COMMIT_SHA
+          # git rebase origin/main
+          echo "1"
+          echo "2"
+          git checkout dev
+          # git rebase --onto $BRANCH_NAME dev
+          git rebase $BRANCH_NAME
+          echo "3"
+          git push
+          echo "4"
