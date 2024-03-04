@@ -25,6 +25,7 @@ jobs:
           git rebase --onto dev $COMMIT_SHA
           echo "1"
           git checkout dev
+          git status
           git rebase --onto $BRANCH_NAME dev
           echo "2"
           git push origin dev
