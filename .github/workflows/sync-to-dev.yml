@@ -17,7 +17,7 @@ jobs:
           git config --global user.email github-actions@github.com
           git config --global user.name github-actions
           BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
-          # echo "Branch name is $BRANCH_NAME!" 
+          echo "Branch name is $BRANCH_NAME!" 
           echo "COMMIT_SHA=$(git rev-parse origin/$BRANCH_NAME)" >> $GITHUB_ENV
           git checkout dev
           git checkout $BRANCH_NAME
@@ -26,7 +26,7 @@ jobs:
           echo "1"
           git checkout dev
           git status
-          git rebase --onto $BRANCH_NAME dev
+          git rebase $BRANCH_NAME
           echo "2"
           git push origin dev
           echo "3"
